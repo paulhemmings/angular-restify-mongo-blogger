@@ -83,7 +83,7 @@ module.exports = function (grunt) {
       },
       dist: {
         src: '.tmp/scripts/{,*/}*.js',
-        dest: 'dist/angular-restify-mongo-blogger.js',
+        dest: '<%= yeoman.dist %>/angular-restify-mongo-blogger.js',
       },
     },
     sass : {
