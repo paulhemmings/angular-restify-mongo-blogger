@@ -3,6 +3,8 @@
 
 exports.initialize = function(server, services) {
 
+  console.log('initializing BlogResource');
+
   // grab the services we need
 
   var blogService = services["BlogService"];
@@ -23,7 +25,7 @@ exports.initialize = function(server, services) {
     blogService.all().then(function(data) {
       console.log(JSON.stringify(data));
       if (data.success && data.content.length == 0) {
-          blogService.persist({ name: 'test-data', content: 'test-content' });
+          blogService.persist({ title: 'test-data', content: 'test-content' });
       }
       res.send(data);
       next();

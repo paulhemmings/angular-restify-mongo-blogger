@@ -13,9 +13,7 @@ Install Node from here https://nodejs.org/
 
 ### Executing Mongo
 
-$ cd [Mongo installation folder]/bin
-
-$ sudo ./mongod  
+$ mongod --config /usr/local/etc/mongod.conf  
 
 ### Getting code and all dependencies
 

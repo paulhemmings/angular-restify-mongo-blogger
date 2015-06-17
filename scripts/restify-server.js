@@ -31,9 +31,9 @@ require( __dirname + '/database/database');
 var models_path = __dirname + '/services';
 var services = {};
 fs.readdirSync(models_path).forEach(function(file) {
-	console.log('load resource ' + file);
-    var service = require(models_path + '/' + file);
-    services[service.name] = service;
+	console.log('load service ' + file);
+  var service = require(models_path + '/' + file);
+  services[service.name] = service;
 });
 
 // bootstrap resources
@@ -41,10 +41,9 @@ fs.readdirSync(models_path).forEach(function(file) {
 var models_path = __dirname + '/resources';
 fs.readdirSync(models_path).forEach(function(file) {
 	console.log('load resource ' + file);
-    var resource = require(models_path + '/' + file);
-    resource.initialize(server, services);
+  var resource = require(models_path + '/' + file);
+  resource.initialize(server, services);
 });
-
 
 // start the server listening
 

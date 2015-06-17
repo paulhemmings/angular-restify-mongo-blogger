@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 // bootstrap connections.
 
 console.log('connect to db');
-var db = mongoose.connect('mongodb://localhost/first-restify-db');
+var db = mongoose.connect('mongodb://localhost/angular-restify-mongo-blogger');
 
 // bootstrap modules
 

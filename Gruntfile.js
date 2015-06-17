@@ -1,88 +1,173 @@
-module.exports = function(grunt) {
+'use strict';
 
-    // 1. All configuration goes here
+module.exports = function (grunt) {
 
-    grunt.initConfig({
+  // Load grunt tasks automatically
+  require('load-grunt-tasks')(grunt);
 
-        pkg: grunt.file.readJSON('package.json'),
+  // Time how long tasks take. Can help when optimizing build times
+  require('time-grunt')(grunt);
 
-        project: {
-            root: './',
-            public: '<%= project.root %>/public',
-            app: '<%= project.root %>/app',
-            scss: [
-                '<%= project.public %>/scss/*.scss'
-            ],
-            js: [
-                '<%= project.public %>/scripts/*.js',
-                '<%= project.app %>/**/*.js'
-            ]
-        },
+  // Configurable paths for the application
+  var appConfig = {
+    public: 'public',
+    app: 'public/app',
+    dist: 'public/dist'
+  };
 
-        sass : {
-            dev: {
-                options: {
-                    style: 'expanded',
-                    compass: false
-                },
-                files: '<%= project.public %>/scss/{,*/}*.{scss,sass}'
+  // Define the configuration for all the tasks
+  grunt.initConfig({
+
+    // Project settings
+    yeoman: appConfig,
+
+    watch: {
+        sass: {
+            files: '<%= yeoman.public %>/scss/{,*/}*.{scss,sass}',
+            tasks: ['sass:dev']
+        }
+    },
+
+    // Make sure code styles are up to par and there are no obvious mistakes
+    jshint: {
+      options: {
+        jshintrc: '.jshintrc',
+        reporter: require('jshint-stylish')
+      },
+      all: {
+        src: [
+          'Gruntfile.js',
+          '<%= yeoman.app %>/{,*/}*.js'
+        ]
+      }
+    },
+
+    // Empties folders to start fresh
+    clean: {
+      dist: {
+        files: [{
+          dot: true,
+          src: [
+            '.tmp',
+            '<%= yeoman.dist %>/{,*/}*',
+            '!<%= yeoman.dist %>/.git*'
+          ]
+        }]
+      },
+      server: '.tmp'
+    },
+
+    // Automatically inject Bower components into the app
+    wiredep: {
+      app: {
+        src: ['<%= yeoman.public %>/index.html'],
+        ignorePath:  /\.\.\//
+      }
+    },
+
+    uglify: {
+      options: {
+        mangle: false
+      },
+      dist: {
+        files: {
+          '<%= yeoman.dist %>/angular-restify-mongo-blogger.min.js': [
+            '.tmp/scripts/{,*/}*.js'
+          ]
+        }
+      }
+    },
+    concat: {
+      options: {
+        separator: ';',
+      },
+      dist: {
+        src: '.tmp/scripts/{,*/}*.js',
+        dest: 'dist/angular-restify-mongo-blogger.js',
+      },
+    },
+    sass : {
+        dev: {
+            options: {
+                style: 'expanded',
+                compass: false
             },
-            dist: {
-                options: {
-                    style: 'compressed',
-                    compass: true
-                },
-                files: {
-                    '<%= project.public %>/styles/global.css': '<%= project.scss %>'
-                }
+            files: {
+                '<%= yeoman.public %>/styles/blog.css': '<%= yeoman.public %>/scss/blog.scss'
             }
         },
-
-        watch: {
-            sass: {
-                files: '<%= project.public %>/scss/{,*/}*.{scss,sass}',
-                tasks: ['sass:dev']
-            }
-        },
-
-        concat: {
-            dist: {
-                src: [
-                    '<%= project.public %>/scripts/*.js', // All public scripts
-                    '<%= project.app %>/**/*.js'   // All the app scripts
-                ],
-                dest: '<%= project.public %>/build/production.js'
-            }
-        },
-
-        uglify: {
-            build: {
-                src: '<%= project.public %>/build/production.js',
-                dest: '<%= project.public %>/build/production.min.js'
+        dist: {
+            options: {
+                style: 'compressed',
+                compass: false
+            },
+            files: {
+                '<%= yeoman.public %>/styles/blog.css': '<%= yeoman.public %>/scss/blog.scss'
             }
         }
+    },
 
-    });
+    // ng-annotate tries to make the code safe for minification automatically
+    // by using the Angular long form for dependency injection.
+    ngAnnotate: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '.tmp/concat/scripts',
+          src: ['*.js', '!oldieshim.js'],
+          dest: '.tmp/concat/scripts'
+        }]
+      }
+    },
 
-    // 3. Where we tell Grunt which plugins we intend to use
+    // Copies remaining files to places other tasks can use
+    copy: {
+      dist: {
+        files: []
+      },
+      concat: {
+        expand: true,
+        cwd: '<%= yeoman.app %>/',
+        dest: '.tmp/scripts/',
+        src: '{,*/}*.js'
+      }
+    },
 
-    grunt.loadNpmTasks('grunt-karma');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
+    // Run some tasks in parallel to speed up the build process
+    concurrent: {
+      dist: [
+        'copy:concat'
+      ]
+    },
 
-    // If we want to use the official SASS compiler, comment out this and add watch to default task
-    // (after installing the sass and compass gems)
-    grunt.loadNpmTasks('grunt-contrib-sass');
-    grunt.loadNpmTasks('grunt-contrib-watch');
+    // Test settings
+    karma: {
+      unit: {
+        configFile: 'test/karma.conf.js',
+        singleRun: true
+      }
+    }
+  });
 
-    // 4. Where we tell Grunt what to do when we type "grunt" into the terminal.
+  grunt.registerTask('test', [
+    'clean:server',
+    'newer:jshint',
+    'connect:test',
+    'karma'
+  ]);
 
-    grunt.registerTask('default', ['karma', 'watch:sass' ]);
+  grunt.registerTask('build', [
+    'clean:dist',
+    'sass:dev',
+    'concurrent:dist',
+    'concat',
+    'ngAnnotate',
+    'copy:dist',
+    'uglify'
+  ]);
 
-    // 5. Where we tell Grunt what other tasks to run
-
-    grunt.registerTask('test', ['karma']);
-    grunt.registerTask('build', ['sass:dev', 'karma']);
-    grunt.registerTask('pre-deploy', ['sass:dist', 'concat', 'uglify']);
-
+  grunt.registerTask('default', [
+    'test',
+    'build'
+  ]);
 };
