@@ -8,10 +8,10 @@ describe('MainApplicationModule', function () {
         module('MainApplicationModule');
     });
 
-    describe('presentationService', function () {
+    describe('bloggerService', function () {
 
-        beforeEach(inject(function (_presentationService_, $http) {
-            service = _presentationService_,
+        beforeEach(inject(function (_bloggerService_, $http) {
+            service = _bloggerService_,
                 mockHttp = $http;
         }));
     });
