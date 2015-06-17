@@ -11,8 +11,8 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     public: 'public',
-    app: 'public/app',
-    dist: 'public/dist'
+    app: '<%= yeoman.public %>/app',
+    dist: '<%= yeoman.public %>/dist'
   };
 
   // Define the configuration for all the tasks
