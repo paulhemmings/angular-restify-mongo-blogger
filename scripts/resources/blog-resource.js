@@ -9,10 +9,19 @@ exports.initialize = function(server, services) {
 
   var blogService = services["BlogService"];
 
+  // route:: add a single blog
+
+  server.post('/blog', function(req, res, next) {
+    blogService.persist(req.body).then(function(data) {
+        res.send(data);
+        next();
+    });
+  });
+
   // route:: get a single blog
 
   server.get('/blog/:id', function(req, res, next) {
-    blogService.get(id).then(function(data) {
+    blogService.get(req.params.id).then(function(data) {
       res.send(data);
       next();
     });

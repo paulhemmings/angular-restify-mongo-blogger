@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * Main Angular module
  *
@@ -31,8 +33,8 @@ angular
                 },
                 'sidebar': {
                     templateUrl: '/app/partials/blogger-sidebar.html',
-                    controller: 'BloggerController'
+                    controller: 'BloggerSidebarController'
                 }
             }
-        })
+        });
 }]);

@@ -2,26 +2,27 @@
 
 angular
     .module('MainApplicationModule')
-    .controller('BloggerController', ['$scope', '$rootScope', 'bloggerManager',
+    .controller('BloggerSidebarController', ['$scope', '$rootScope', 'bloggerManager',
         function($scope, $rootScope, bloggerManager) {
 
-            $scope.selectedBlogs = [];
+            $scope.blogs = [];
 
-            function updateBlog(blog) {
-                bloggerManager.updateBlog(blog);
+            function selectBlog(blog) {
+                bloggerManager.selectBlogs([blog]);
             }
 
             function handleEvents(root) {
-                root.$on('blogs-selected', function() {
-                    $scope.selectedBlogs = bloggerManager.selectedBlogs;
+                root.$on('blogs-loaded', function() {
+                    $scope.blogs = bloggerManager.blogs;
                 });
             }
 
             function exposeMethods(scope) {
-                scope.updateBlog = updateBlog;
+                scope.selectBlog = selectBlog;
             }
 
             function initialize() {
+                bloggerManager.loadBlogs();
                 handleEvents($rootScope);
                 exposeMethods($scope);
             }
@@ -34,9 +35,9 @@ angular
              */
 
             $scope.__test__ = {
-                handleEvents: handleEvents,
-                exposeMethods: exposeMethods,
-                initialize: initialize
+              handleEvents: handleEvents,
+              exposeMethods: exposeMethods,
+              initialize: initialize
             };
 
         }]);

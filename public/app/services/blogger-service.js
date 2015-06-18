@@ -1,3 +1,4 @@
+'use strict';
 
 /*
  * Data provider service.
@@ -16,7 +17,7 @@ angular
         function listBlogs() {
             return $http({
                 url: '/blogs',
-                method: "GET"
+                method: 'GET'
             });
         }
 
@@ -24,15 +25,15 @@ angular
             return $http({
                 url: '/blog',
                 data: blog,
-                method: "PUT"
+                method: 'POST'
             });
         }
 
         function getBlog(blog) {
             return $http({
-                url: '/blog/' + blog.id,
+                url: '/blog/' + blog['_id'],
                 data: blog,
-                method: "GET"
+                method: 'GET'
             });
         }
 

@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * Upload a file
  *
@@ -18,13 +20,14 @@ angular
                 }
             }
             fd.append('meta', JSON.stringify(metatadata));
-            return $http.post("/api/v1" + uploadUrl, fd, {
+            return $http.post('/api/v1' + uploadUrl, fd, {
                 transformRequest: angular.identity,
-                headers: {'enctype': "multipart/form-data" , 'Content-Type': undefined}
+                headers: {'enctype': 'multipart/form-data' , 'Content-Type': undefined}
             });
         }
 
         return {
             uploadFileToUrl : uploadFileToUrl
-        }
+        };
+        
     }]);

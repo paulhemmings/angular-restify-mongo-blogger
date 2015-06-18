@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * http://jsfiddle.net/JeJenny/ZG9re/
  * http://uncorkedstudios.com/blog/multipartformdata-file-upload-with-angularjs
