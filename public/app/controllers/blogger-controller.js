@@ -12,6 +12,9 @@ angular
             }
 
             function handleEvents(root) {
+                root.$on('blog-created', function() {
+                    $scope.newBlog = {};
+                });
                 root.$on('blogs-selected', function() {
                     $scope.selectedBlogs = bloggerManager.selectedBlogs;
                 });

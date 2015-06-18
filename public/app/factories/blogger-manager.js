@@ -3,7 +3,7 @@
 /*
  * Model manager.
  * Used to encapsulate all model specific methods into single object
- *
+ * http://viralpatel.net/blogs/angularjs-service-factory-tutorial/
  */
 
 angular
@@ -18,6 +18,9 @@ angular
 
       manager.loadBlogs = function() {
           bloggerService.listBlogs().then(function(response) {
+              if (response.data.success) {
+                $rootScope.$broadcast('blog-created');  
+              }
               manager.blogs = response.data.content;
               if (manager.blogs.length > 0) {
                   manager.selectedBlogs = [ manager.blogs[0] ];
