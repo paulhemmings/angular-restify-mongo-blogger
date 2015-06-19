@@ -1,5 +1,8 @@
 
-// example of using a service to retrieve data from MongoDB
+/*
+ * Blog resource
+ * Provide endpoints for managing blogs
+ */
 
 exports.initialize = function(server, services) {
 

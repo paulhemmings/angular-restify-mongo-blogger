@@ -18,20 +18,17 @@ angular
 
       manager.loadBlogs = function() {
           bloggerService.listBlogs().then(function(response) {
-              if (response.data.success) {
-                $rootScope.$broadcast('blog-created');  
-              }
               manager.blogs = response.data.content;
-              if (manager.blogs.length > 0) {
-                  manager.selectedBlogs = [ manager.blogs[0] ];
-              }
               $rootScope.$broadcast('blogs-loaded');
           });
       };
 
       manager.updateBlog = function(blog) {
-          bloggerService.updateBlog(blog).then(function() {
-            manager.loadBlogs();
+          bloggerService.updateBlog(blog).then(function(response) {
+            if (response.data.success) {
+              $rootScope.$broadcast('blog-created');
+              manager.loadBlogs();
+            }
           });
       };
 
