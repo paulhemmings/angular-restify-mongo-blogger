@@ -5,6 +5,8 @@
  * http://stackoverflow.com/questions/3393854/get-and-set-a-single-cookie-with-node-js-http-server
  */
 
+exports.name = 'CookieService';
+
 function parseCookies (request) {
     var list = {},
         rc = request.headers.cookie;
@@ -18,8 +20,6 @@ function parseCookies (request) {
 
     return list;
 }
-
-exports.name = 'CookieService';
 
 exports.readCookie = function(request, name) {
     return parseCookies(request)[name];

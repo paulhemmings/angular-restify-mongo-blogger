@@ -33,7 +33,7 @@
    */
 
   exports.authenticateResponse = function(res, user, cookieService, cryptoService) {
-      res.writeCookie(res, tokenName(), generateToken(cryptoService, user));
+      cookieService.writeCookie(res, tokenName(), generateToken(cryptoService, user));
   }
 
 })(exports);

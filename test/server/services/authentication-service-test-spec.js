@@ -1,11 +1,11 @@
-var authService = require('./../../services/authentication-service');
+var authService = require('./../../../scripts/services/authentication-service');
 
-describe("An example server side test suite", function() {
+describe("Authentication Service suite", function() {
 
 	beforeEach(function() {
 	});
 
-	it("should validate a token", function() {
+	it("should authenticate a request", function() {
     var req = {},
         cookieService = {
           readContent : function(req, name) {
@@ -14,18 +14,31 @@ describe("An example server side test suite", function() {
         },
         cryptoService = {
           decrypt : function(value) {
-            return "{ 'name': 'paul'}"
+            return '{ "name": "paul"}'
           }
         };
 
-		expect(authenticateResponse.authenticateRequest(req, cookieService, cryptoService)).toBe('paul');
+		expect(authService.authenticateRequest(req, cookieService, cryptoService)).toBe('paul');
 
 	});
 
-	it("should handle an asyncronous test", function(done) {
-		request("http://www.google.com", function(error, response, body){
-			done();
-		});
-	});
+  it("should authenticate a response", function() {
+
+    var user = { "name" : "paul"};
+    var cookieService = {
+          writeCookie : function(res, token, content) {
+            expect(content).toBe("encrypted");
+          }
+    };
+    var cryptoService = {
+      encrypt : function(content) {
+        expect(content).toBe('{"name":"paul"}');
+        return "encrypted";
+      }
+    };
+    var res = {};
+
+    expect(authService.authenticateResponse(res, user, cookieService, cryptoService));
+  });
 
 });
