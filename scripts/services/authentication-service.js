@@ -25,7 +25,7 @@
    */
 
   exports.authenticateRequest = function(req, cookieService, cryptoService) {
-      return validateToken(cryptoService, cookieService.readContent(req, tokenName()));
+      return validateToken(cryptoService, cookieService.readCookie(req, tokenName()));
   }
 
   /*

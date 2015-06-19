@@ -8,7 +8,7 @@ describe("Authentication Service suite", function() {
 	it("should authenticate a request", function() {
     var req = {},
         cookieService = {
-          readContent : function(req, name) {
+          readCookie : function(req, name) {
             return "cookie-token"
           }
         },
