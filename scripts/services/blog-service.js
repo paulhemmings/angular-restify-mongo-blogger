@@ -1,12 +1,14 @@
+'use strict';
+
 var Mongoose = require('mongoose'),
     Blog = Mongoose.model('Blog'),
     Promise = require("node-promise").Promise;
 
 exports.name = "BlogService";
 
-exports.all = function() {
+exports.all = function(user) {
   var promise = new Promise();
-	Blog.find(function(err, blogs) {
+	Blog.find({ user_id : user._id }, function(err, blogs) {
 		if(err) {
       console.log(err.error);
       promise.resolve ({ success : false, error: err.error });
@@ -17,9 +19,9 @@ exports.all = function() {
   return promise;
 };
 
-exports.get = function(id) {
+exports.get = function(user, id) {
   var promise = new Promise();
-	Blog.find({ _id : id }, function(err, blogs) {
+	Blog.find({ user_id : user._id,  _id : id }, function(err, blogs) {
     if(err) {
       console.log(err.error);
       promise.resolve ({ success : false, error: err.error });
@@ -29,9 +31,16 @@ exports.get = function(id) {
   return promise;
 };
 
-exports.persist = function(model) {
+exports.persist = function(user, model) {
   var promise = new Promise();
 	var blog = new Blog(model || {});
+
+  if (blog._id && blog.user_id != user._id) {
+      promise.resolve({ success : false, error : 'blog belongs to different user'});
+      return promise;
+  }
+
+  blog.user_id = user._id;
 	blog.save(function(err) {
     if(err) {
       console.log(err.error);
@@ -42,7 +51,7 @@ exports.persist = function(model) {
   return promise;
 };
 
-exports.delete = function(id) {
+exports.delete = function(user, id) {
   var promise = new Promise();
 	Blog.remove({ _id: id }, function (err) {
     if(err) {

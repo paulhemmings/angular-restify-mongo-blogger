@@ -10,6 +10,7 @@ module.exports = function (grunt) {
 
   // Configurable paths for the application
   var appConfig = {
+    server: 'scripts',
     public: 'public',
     app: '<%= yeoman.public %>/app',
     dist: '<%= yeoman.public %>/dist'
@@ -33,6 +34,11 @@ module.exports = function (grunt) {
       options: {
         jshintrc: '.jshintrc',
         reporter: require('jshint-stylish')
+      },
+      server: {
+        src: [
+          '<%= yeoman.server %>/**/*.js'
+        ]
       },
       all: {
         src: [

@@ -35,7 +35,7 @@ angular
       manager.selectBlogs = function(blogs) {
           manager.selectedBlogs = blogs;
           $rootScope.$broadcast('blogs-selected');
-      }
+      };
 
       return manager;
 

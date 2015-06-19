@@ -31,7 +31,7 @@ angular
 
         function getBlog(blog) {
             return $http({
-                url: '/blog/' + blog['_id'],
+                url: '/blog/' + blog._id,
                 data: blog,
                 method: 'GET'
             });
