@@ -41,7 +41,7 @@ exports.persist = function(cryptoService, model) {
 	var user = new User(model || {});
 
   if (user._id) {
-      promise.resolve({ success : false, error : 'cannot yet edit existing user'});
+      promise.resolve({ success : false, error : 'cannot yet edit existing user:' + user._id});
       return promise;
   }
 

@@ -21,9 +21,18 @@ angular.module('MainApplicationModule', ['ui.router', 'ngAnimate']);
 angular
     .module('MainApplicationModule')
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/blogger');
+    $urlRouterProvider.otherwise('/login');
 
     $stateProvider
+        .state('unauthenticated', {
+            url:'/login',
+            views: {
+                'content': {
+                    templateUrl: '/app/partials/login.html',
+                    controller: 'LoginController'
+                }
+            }
+        })
         .state('blogger', {
             url:'/blogger',
             views: {
