@@ -8,7 +8,7 @@
  *  var app = angular.module('app');
  */
 
-angular.module('MainApplicationModule', ['ui.router', 'ngAnimate', 'angular-loading-bar']);
+angular.module('MainApplicationModule', ['ui.router', 'ngAnimate']);
 
 /*
  * Add SPA Routing using route provider

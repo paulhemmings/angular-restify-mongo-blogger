@@ -11,21 +11,23 @@ exports.name = 'UserService';
  * Return that user object
  */
 
-exports.find = function(filter) {
-  var promise = new Promise();
-	User.find(filter, function(err, users) {
-		if (err) {
-      console.log(err.error);
-      promise.resolve ({ success : false, error: err.error });
-		}
-    if (users && users.length>0) {
-      console.log('returning blogs');
-      promise.resolve ({ success : true, content : users[0] });
-    }
-    promise.resolve({ success: false, error: 'no user found'});
-	});
-  return promise;
-};
+ function find (filter) {
+   var promise = new Promise();
+ 	User.find(filter, function(err, users) {
+ 		if (err) {
+       console.log(err.error);
+       promise.resolve ({ success : false, error: err.error });
+ 		}
+     if (users && users.length>0) {
+       console.log('returning blogs');
+       promise.resolve ({ success : true, content : users[0] });
+     }
+     promise.resolve({ success: false, error: 'no user found'});
+ 	});
+   return promise;
+ }
+
+exports.find = find;
 
 exports.login = function(cryptoService, username, password) {
   return find({

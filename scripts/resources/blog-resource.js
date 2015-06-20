@@ -18,8 +18,7 @@
       extensions : require('./../helpers/extensions'),
 
       getAuthenticatedUser : function(req, userService, authService, cookieService, cryptoService) {
-         var name = authService.authenticateRequest(req, cookieService, cryptoService);
-         return userService.find({ 'name' : name});
+         return authService.authenticateRequest(req, cookieService, cryptoService);
       },
 
       postBlog : function (req, res, next) {
@@ -32,6 +31,9 @@
                     next();
                 });
             }
+        }, function(response) {
+          res.send(response);
+          next();
         });
       },
 
@@ -44,6 +46,9 @@
                     next();
                 });
             }
+        }, function(response) {
+          res.send(response);
+          next();
         });
       },
 
@@ -51,7 +56,7 @@
         var self = this;
         self.getAuthenticatedUser(req, self.userService, self.authService, self.cookieService, self.cryptoService).then(function(response) {
             if (response.success) {
-                self.blogService.all(response.content).then(function(data) {
+                self.blogService.all(response.content.name).then(function(data) {
                     if (data.success && data.content.length === 0) {
                         self.blogService.persist(response.content, { title: 'test-data', content: 'test-content' });
                     }
@@ -59,6 +64,9 @@
                     next();
                 });
             }
+        }, function(response) {
+          res.send(response);
+          next();
         });
       }
 

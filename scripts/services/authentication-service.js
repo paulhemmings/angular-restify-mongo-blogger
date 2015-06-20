@@ -2,6 +2,8 @@
 
 (function(exports) {
 
+  var Promise = require('node-promise').Promise;
+
   exports.name = 'AuthenticationService';
 
   /*
@@ -12,8 +14,8 @@
       return 'BloggerAuthenticationToken';
   }
 
-  function validateToken(cryptoService, token) {
-      return JSON.parse(cryptoService.decrypt(token)).name;
+  function retrieveToken(cryptoService, cookie) {
+      return (!cookie) ? undefined : JSON.parse(cryptoService.decrypt(cookie));
   }
 
   function generateToken(cryptoService, user) {
@@ -25,7 +27,14 @@
    */
 
   exports.authenticateRequest = function(req, cookieService, cryptoService) {
-      return validateToken(cryptoService, cookieService.readCookie(req, tokenName()));
+      var promise = new Promise();
+      var token = retrieveToken(cryptoService, cookieService.readCookie(req, tokenName()));
+      if (token && token.name !== undefined) {
+          promise.resolve({ success : true, content : token });
+      } else {
+          promise.reject({ success : false, error : 'invalid token'});
+      }
+      return promise;
   };
 
   /*
@@ -33,7 +42,11 @@
    */
 
   exports.authenticateResponse = function(res, user, cookieService, cryptoService) {
-      cookieService.writeCookie(res, tokenName(), generateToken(cryptoService, user));
+      var promise = new Promise();
+      var token = generateToken(cryptoService, user);
+      cookieService.writeCookie(res, tokenName(), token);
+      promise.resolve({ success : true, content : token });
+      return promise;
   };
 
 })(exports);

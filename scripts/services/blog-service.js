@@ -8,7 +8,7 @@ exports.name = 'BlogService';
 
 exports.all = function(user) {
   var promise = new Promise();
-	Blog.find({ user_id : user._id }, function(err, blogs) {
+	Blog.find({ userId : user._id }, function(err, blogs) {
 		if(err) {
       console.log(err.error);
       promise.resolve ({ success : false, error: err.error });
@@ -21,7 +21,7 @@ exports.all = function(user) {
 
 exports.get = function(user, id) {
   var promise = new Promise();
-	Blog.find({ user_id : user._id,  _id : id }, function(err, blogs) {
+	Blog.find({ userId : user._id,  _id : id }, function(err, blogs) {
     if(err) {
       console.log(err.error);
       promise.resolve ({ success : false, error: err.error });
@@ -35,12 +35,12 @@ exports.persist = function(user, model) {
   var promise = new Promise();
 	var blog = new Blog(model || {});
 
-  if (blog._id && blog.user_id !== user._id) {
+  if (blog._id && blog.userId !== user._id) {
       promise.resolve({ success : false, error : 'blog belongs to different user'});
       return promise;
   }
 
-  blog.user_id = user._id;
+  blog.userId = user._id;
 	blog.save(function(err) {
     if(err) {
       console.log(err.error);
