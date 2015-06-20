@@ -14,9 +14,8 @@ exports.initialize = function(server, services) {
   // take username and password. return user object if login successful.
 
   server.post('/user/login', function(req, res, next) {
-    var loginParams = JSON.parse(req.body);
-    userService.login(cryptoService, loginParams.username, loginParams.password).then(function(data) {
-        authService.authenticateResponse(res, cookieService, cryptoService);
+    userService.login(cryptoService, req.body.username, req.body.password).then(function(data) {
+        authService.authenticateResponse(res, data.content, cookieService, cryptoService);
         res.send(data);
         next();
     });
@@ -27,6 +26,7 @@ exports.initialize = function(server, services) {
   // TODO: allow existing user to edit their profile
 
   server.post('/user', function(req, res, next) {
+    console.log('create user with: ', req.body);
     userService.persist(cryptoService, req.body).then(function(data) {
         res.send(data);
         next();
