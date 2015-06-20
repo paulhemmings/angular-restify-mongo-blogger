@@ -2,7 +2,7 @@
 
 (function(exports) {
 
-  exports.name = "AuthenticationService";
+  exports.name = 'AuthenticationService';
 
   /*
    * Validate token
@@ -26,7 +26,7 @@
 
   exports.authenticateRequest = function(req, cookieService, cryptoService) {
       return validateToken(cryptoService, cookieService.readCookie(req, tokenName()));
-  }
+  };
 
   /*
    * Authenticate future responses
@@ -34,6 +34,6 @@
 
   exports.authenticateResponse = function(res, user, cookieService, cryptoService) {
       cookieService.writeCookie(res, tokenName(), generateToken(cryptoService, user));
-  }
+  };
 
 })(exports);

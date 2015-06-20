@@ -1,4 +1,6 @@
-var restify = require('restify')
+'use strict';
+
+var restify = require('restify'),
     fs = require('fs');
 
 // instantiate the server
@@ -17,7 +19,7 @@ server.get(/\/(lib|app|styles)\/?.*/, restify.serveStatic({
 
 // serve the root page
 
-server.get("/", restify.serveStatic({
+server.get('/', restify.serveStatic({
   directory: './public',
   default: 'index.html'
 }));
@@ -28,20 +30,20 @@ require( __dirname + '/database/database');
 
 // bootstrap services
 
-var models_path = __dirname + '/services';
+var modelsPath = __dirname + '/services';
 var services = {};
-fs.readdirSync(models_path).forEach(function(file) {
+fs.readdirSync(modelsPath).forEach(function(file) {
 	console.log('load service ' + file);
-  var service = require(models_path + '/' + file);
+  var service = require(modelsPath + '/' + file);
   services[service.name] = service;
 });
 
 // bootstrap resources
 
-var models_path = __dirname + '/resources';
-fs.readdirSync(models_path).forEach(function(file) {
+var modelsPath = __dirname + '/resources';
+fs.readdirSync(modelsPath).forEach(function(file) {
 	console.log('load resource ' + file);
-  var resource = require(models_path + '/' + file);
+  var resource = require(modelsPath + '/' + file);
   resource.initialize(server, services);
 });
 

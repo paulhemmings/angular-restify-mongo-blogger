@@ -2,9 +2,9 @@
 
 var Mongoose = require('mongoose'),
     Blog = Mongoose.model('Blog'),
-    Promise = require("node-promise").Promise;
+    Promise = require('node-promise').Promise;
 
-exports.name = "BlogService";
+exports.name = 'BlogService';
 
 exports.all = function(user) {
   var promise = new Promise();
@@ -13,7 +13,7 @@ exports.all = function(user) {
       console.log(err.error);
       promise.resolve ({ success : false, error: err.error });
 		}
-    console.log("returning blogs");
+    console.log('returning blogs');
     promise.resolve ({ success : true, content : blogs });
 	});
   return promise;
@@ -35,7 +35,7 @@ exports.persist = function(user, model) {
   var promise = new Promise();
 	var blog = new Blog(model || {});
 
-  if (blog._id && blog.user_id != user._id) {
+  if (blog._id && blog.user_id !== user._id) {
       promise.resolve({ success : false, error : 'blog belongs to different user'});
       return promise;
   }

@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require('mongoose'),
 	fs = require('fs');
 
@@ -8,8 +10,8 @@ var db = mongoose.connect('mongodb://localhost/angular-restify-mongo-blogger');
 
 // bootstrap modules
 
-var models_path = __dirname + '/models';
-fs.readdirSync(models_path).forEach(function(file) {
+var modelsPath = __dirname + '/models';
+fs.readdirSync(modelsPath).forEach(function(file) {
 	console.log('load model ' + file);
-    require(models_path + '/' + file);
+    require(modelsPath + '/' + file);
 });

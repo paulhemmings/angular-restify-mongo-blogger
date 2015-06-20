@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * Nifty little method to ensure that allows you to
  * bind a method to a desired scope.
@@ -13,5 +15,5 @@
 exports.bind = function(fn, scope) {
   return function () {
     return fn.apply(scope, arguments);
-  }
-}
+  };
+};

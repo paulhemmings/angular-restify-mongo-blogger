@@ -4,10 +4,10 @@ exports.initialize = function(server, services) {
 
   // grab the services we need
 
-  var userService = services["UserService"],
-      authService = services["AuthenticationService"],
-      cookieService = services["CookieService"],
-      cryptoService = services["CryptoService"];
+  var userService = services.UserService,
+      authService = services.AuthenticationService,
+      cookieService = services.CookieService,
+      cryptoService = services.CryptoService;
 
 
   // user: login
@@ -33,4 +33,4 @@ exports.initialize = function(server, services) {
     });
   });
 
-}
+};
