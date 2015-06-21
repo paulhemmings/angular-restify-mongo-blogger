@@ -1,5 +1,7 @@
 'use strict';
 
+  var Extensions = require('./../helpers/extensions'),
+      Promise = require('node-promise').Promise;
 /*
  * Blog resource
  * Provide endpoints for managing blogs
@@ -15,57 +17,57 @@
       authService : services.AuthenticationService,
       cookieService : services.CookieService,
       cryptoService : services.CryptoService,
-      extensions : require('./../helpers/extensions'),
+
 
       getAuthenticatedUser : function(req, userService, authService, cookieService, cryptoService) {
-         return authService.authenticateRequest(req, cookieService, cryptoService);
+          var promise = new Promise();
+          authService.authenticateRequest(req, cookieService, cryptoService).then(function(token) {
+              userService.find({'username' : token.username}).then(function(user) {
+                  promise.resolve(user);
+              }, function(error) {
+                  promise.reject({'error': 'invalid user:' + error});
+              });
+          }, function(error) {
+              promise.reject({'error': 'invalid token:' + error});
+          });
+          return promise;
       },
 
       postBlog : function (req, res, next) {
         var self = this;
-        self.getAuthenticatedUser(req, self.userService, self.authService, self.cookieService, self.cryptoService).then(function(response) {
-            console.log('post a new blog to the store');
-            if (response.success) {
-                self.blogService.persist(response.content, req.body).then(function(data) {
-                    res.send(data);
-                    next();
-                });
-            }
-        }, function(response) {
-          res.send(response);
+        self.getAuthenticatedUser(req, self.userService, self.authService, self.cookieService, self.cryptoService).then(function(user) {
+            self.blogService.persist(user, req.body).then(function(blogs) {
+                res.send(200, blogs);
+                next();
+            });
+        }, function(error) {
+          res.send(401, error);
           next();
         });
       },
 
       getBlog : function(req, res, next) {
         var self = this;
-        self.getAuthenticatedUser(req, self.userService, self.authService, self.cookieService, self.cryptoService).then(function(response) {
-            if (response.success) {
-                self.blogService.get(response.content, req.params.id).then(function(data) {
-                    res.send(data);
-                    next();
-                });
-            }
-        }, function(response) {
-          res.send(response);
+        self.getAuthenticatedUser(req, self.userService, self.authService, self.cookieService, self.cryptoService).then(function(user) {
+            self.blogService.get(user, req.params.id).then(function(blog) {
+                res.send(200, blog);
+                next();
+            });
+        }, function(error) {
+          res.send(401, error);
           next();
         });
       },
 
       allBlogs : function(req, res, next) {
         var self = this;
-        self.getAuthenticatedUser(req, self.userService, self.authService, self.cookieService, self.cryptoService).then(function(response) {
-            if (response.success) {
-                self.blogService.all(response.content.name).then(function(data) {
-                    if (data.success && data.content.length === 0) {
-                        self.blogService.persist(response.content, { title: 'test-data', content: 'test-content' });
-                    }
-                    res.send(data);
-                    next();
-                });
-            }
-        }, function(response) {
-          res.send(response);
+        self.getAuthenticatedUser(req, self.userService, self.authService, self.cookieService, self.cryptoService).then(function(user) {
+            self.blogService.all(user).then(function(blogs) {
+                res.send(200, blogs);
+                next();
+            });
+        }, function(error) {
+          res.send(401, error);
           next();
         });
       }
@@ -76,9 +78,9 @@
      * Bind service end points to methods
      */
 
-    server.post('/blog', Context.extensions.bind(Context.postBlog, Context));
-    server.get('/blog/:id', Context.extensions.bind(Context.getBlog, Context));
-    server.get('/blogs', Context.extensions.bind(Context.allBlogs, Context));
+    server.post('/blog', Extensions.bind(Context.postBlog, Context));
+    server.get('/blog/:id', Extensions.bind(Context.getBlog, Context));
+    server.get('/blogs', Extensions.bind(Context.allBlogs, Context));
 
     /*
      * Expose hidden methods for unit testing.

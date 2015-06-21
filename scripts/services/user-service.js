@@ -11,56 +11,49 @@ exports.name = 'UserService';
  * Return that user object
  */
 
- function find (filter) {
-   var promise = new Promise();
- 	User.find(filter, function(err, users) {
- 		if (err) {
-       console.log(err.error);
-       promise.resolve ({ success : false, error: err.error });
- 		} else if (users && users.length>0) {
-       console.log('returning users');
-       promise.resolve ({ success : true, content : users[0] });
-    } else {
-        promise.resolve({ success: false, error: 'no user found'});
-    }
- 	});
-   return promise;
+ function findUser (filter) {
+     var promise = new Promise();
+   	 User.find(filter, function(err, users) {
+
+      if (err) {
+         return promise.reject (err.error);
+   		}
+
+      if (!users || users.length===0) {
+          return promise.reject ('no user found');
+      }
+
+      promise.resolve (users[0]);
+
+   	});
+    return promise;
  }
 
-exports.find = find;
+exports.find = findUser;
 
 exports.login = function(cryptoService, username, password) {
-  return find({
+  return findUser({
       'username': username,
       'password': cryptoService.encrypt(password)
     });
 };
 
 exports.persist = function(cryptoService, model) {
-  var promise = new Promise();
+    var promise = new Promise();
 
-  console.log('create a user out of model');
-	var user = new User(model || {});
+    if (model._id) {
+        promise.reject ('cannot yet edit existing user');
+        return promise;
+    }
 
-  // console.log('check if user has id');
-  // if (user._id) {
-  //     promise.resolve({ success : false, error : 'cannot yet edit existing user:' + user._id});
-  //     return promise;
-  // }
+  	var user = new User(model || {});
+    user.password = cryptoService.encrypt(user.password);
+  	user.save(function(err) {
+        if(err) {
+            return promise.reject (err.error);
+    		}
+        promise.resolve (user);
+  	});
 
-  console.log('encrypt password before saving');
-  user.password = cryptoService.encrypt(user.password);
-
-  console.log('save user to DB');
-	user.save(function(err) {
-    if(err) {
-      console.log(err.error);
-      promise.resolve ({ success : false, error: err.error });
-		}
-
-    console.log('return user');
-    promise.resolve ({ success : true, content : user });
-	});
-
-  return promise;
+    return promise;
 };

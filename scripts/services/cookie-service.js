@@ -7,27 +7,17 @@
 
 exports.name = 'CookieService';
 
-function parseCookies (request) {
-    var list = {},
-        rc = request.headers.cookie;
-
-    if (rc) {
-      rc.split(';').forEach(function( cookie ) {
-        var parts = cookie.split('=');
-        list[parts.shift().trim()] = decodeURI(parts.join('='));
-      });
-    }
-
-    return list;
-}
-
 exports.readCookie = function(request, name) {
-    return parseCookies(request)[name];
+    var cookies = request.cookies;
+    return cookies ? cookies[name] : undefined;
 };
 
 exports.writeCookie = function(response, name, content) {
-    response.writeHead(200, {
-      'Set-Cookie': name + '=' + content,
-      'Content-Type': 'text/plain'
+        response.setCookie(name, content, {
+        path: '/',
+        // domain:'www.example.com',
+        maxAge: 60,
+        secure: false,
+        httpOnly: false
     });
 };

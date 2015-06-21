@@ -2,21 +2,21 @@
 
 angular
     .module('MainApplicationModule')
-    .controller('LoginController', ['$scope', '$rootScope', 'userService',
-        function($scope, $rootScope, userService) {
+    .controller('LoginController', ['$scope', '$rootScope', '$location', 'userService',
+        function($scope, $rootScope, $location, userService) {
 
             function login(user) {
                 userService.login(user).then(function(response) {
-                    if (response.success) {
-                        // redirect to blogger.
-                    };
+                    $location.path( "/blogger" );
+                }, function(error) {
+                    $scope.error = error.error;
                 });
             }
 
             function create(user) {
                 userService.create(user).then(function(response) {
                     if (response.success) {
-                        // redirect to blogger.
+
                     };
                 });
             }

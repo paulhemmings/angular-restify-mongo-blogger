@@ -14,9 +14,12 @@ exports.initialize = function(server, services) {
   // take username and password. return user object if login successful.
 
   server.post('/user/login', function(req, res, next) {
-    userService.login(cryptoService, req.body.username, req.body.password).then(function(data) {
-        authService.authenticateResponse(res, data.content, cookieService, cryptoService);
-        res.send(data);
+    userService.login(cryptoService, req.body.username, req.body.password).then(function(user) {
+        authService.authenticateResponse(res, user, cookieService, cryptoService);
+        res.send(200, user);
+        next();
+    }, function(error) {
+        res.send(401, { 'error': error});
         next();
     });
   });
@@ -27,8 +30,11 @@ exports.initialize = function(server, services) {
 
   server.post('/user', function(req, res, next) {
     console.log('create user with: ', req.body);
-    userService.persist(cryptoService, req.body).then(function(data) {
-        res.send(data);
+    userService.persist(cryptoService, req.body).then(function(user) {
+        res.send(200, user);
+        next();
+    }, function(error) {
+        res.send(401, { 'error': error});
         next();
     });
   });

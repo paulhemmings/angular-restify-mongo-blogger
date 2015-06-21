@@ -19,7 +19,7 @@
   }
 
   function generateToken(cryptoService, user) {
-      return cryptoService.encrypt(JSON.stringify({ 'name' : user.name }));
+      return cryptoService.encrypt(JSON.stringify({ 'username' : user.username }));
   }
 
   /*
@@ -29,11 +29,13 @@
   exports.authenticateRequest = function(req, cookieService, cryptoService) {
       var promise = new Promise();
       var token = retrieveToken(cryptoService, cookieService.readCookie(req, tokenName()));
-      if (token && token.name !== undefined) {
-          promise.resolve({ success : true, content : token });
-      } else {
-          promise.reject({ success : false, error : 'invalid token'});
+
+      if (!token || token.username === undefined) {
+          promise.reject ('invalid token');
+          return promise;
       }
+
+      promise.resolve (token);
       return promise;
   };
 
@@ -45,7 +47,8 @@
       var promise = new Promise();
       var token = generateToken(cryptoService, user);
       cookieService.writeCookie(res, tokenName(), token);
-      promise.resolve({ success : true, content : token });
+
+      promise.resolve(token);
       return promise;
   };
 
