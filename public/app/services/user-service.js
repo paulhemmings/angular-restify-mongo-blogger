@@ -20,9 +20,17 @@ angular
             });
         }
 
+        function get(user) {
+            return $http({
+                url: '/user',
+                method: 'GET'
+            });
+        }
+
         return {
             login: login,
-            create: create
+            create: create,
+            get: get
         };
 
     });

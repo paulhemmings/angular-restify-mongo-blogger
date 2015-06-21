@@ -15,9 +15,9 @@ angular
 
             function create(user) {
                 userService.create(user).then(function(response) {
-                    if (response.success) {
-
-                    };
+                  $location.path( "/blogger" );
+                }, function(error) {
+                    $scope.error = error.error;
                 });
             }
 
