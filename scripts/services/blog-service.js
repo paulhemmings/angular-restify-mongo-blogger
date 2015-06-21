@@ -32,7 +32,7 @@ exports.persist = function(user, model) {
   var promise = new Promise();
 	var blog = new Blog(model || {});
 
-  if (blog._id && blog.userId !== user._id) {
+  if (blog._id && blog.userId && blog.userId !== user._id) {
       promise.reject('blog belongs to different user');
       return promise;
   }

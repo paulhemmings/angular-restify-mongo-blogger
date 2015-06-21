@@ -36,8 +36,8 @@
       postBlog : function (req, res, next) {
         var self = this;
         self.getAuthenticatedUser(req, self.userService, self.authService, self.cookieService, self.cryptoService).then(function(user) {
-            self.blogService.persist(user, req.body).then(function(blogs) {
-                res.send(200, blogs);
+            self.blogService.persist(user, req.body).then(function(blog) {
+                res.send(200, blog);
                 next();
             });
         }, function(error) {

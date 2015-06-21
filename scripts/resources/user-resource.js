@@ -29,7 +29,6 @@ exports.initialize = function(server, services) {
   // TODO: allow existing user to edit their profile
 
   server.post('/user', function(req, res, next) {
-    console.log('create user with: ', req.body);
     userService.persist(cryptoService, req.body).then(function(user) {
         res.send(200, user);
         next();

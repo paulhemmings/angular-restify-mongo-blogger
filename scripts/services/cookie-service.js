@@ -16,7 +16,7 @@ exports.writeCookie = function(response, name, content) {
         response.setCookie(name, content, {
         path: '/',
         // domain:'www.example.com',
-        maxAge: 60,
+        maxAge: 60000,
         secure: false,
         httpOnly: false
     });
