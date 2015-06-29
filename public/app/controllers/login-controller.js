@@ -6,16 +6,16 @@ angular
         function($scope, $rootScope, $location, userService) {
 
             function login(user) {
-                userService.login(user).then(function(response) {
-                    $location.path( "/blogger" );
+                userService.login(user).then(function() {
+                    $location.path( '/blogger' );
                 }, function(error) {
                     $scope.error = error.error;
                 });
             }
 
             function create(user) {
-                userService.create(user).then(function(response) {
-                  $location.path( "/blogger" );
+                userService.create(user).then(function() {
+                  $location.path( '/blogger' );
                 }, function(error) {
                     $scope.error = error.error;
                 });

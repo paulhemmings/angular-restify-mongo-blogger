@@ -20,7 +20,7 @@ angular
             });
         }
 
-        function get(user) {
+        function get() {
             return $http({
                 url: '/user',
                 method: 'GET'

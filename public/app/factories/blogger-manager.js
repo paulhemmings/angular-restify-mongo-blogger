@@ -24,7 +24,7 @@ angular
       };
 
       manager.updateBlog = function(blog) {
-          bloggerService.updateBlog(blog).then(function(response) {
+          bloggerService.updateBlog(blog).then(function() {
               $rootScope.$broadcast('blog-created');
               manager.loadBlogs();
           });

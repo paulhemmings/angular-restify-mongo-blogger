@@ -6,11 +6,11 @@ angular
         function($scope, $rootScope, $location, userService) {
 
             function initialize() {
-                userService.get().then(function(user) {
-                    $location.path( "/blogger");
-                }, function(error) {
-                    $location.path( "/login");
-                })
+                userService.get().then(function() {
+                    $location.path( '/blogger');
+                }, function() {
+                    $location.path( '/login');
+                });
             }
 
             initialize();
