@@ -49,11 +49,11 @@ exports.initialize = function(server, services) {
             res.send(200, { 'username' : user.username });
             next();
           }, function(error) {
-              res.send(401, { 'error': 'invalid user'});
+              res.send(401, { 'error': 'invalid user:' + error});
               next();
           });
       }, function(error) {
-          res.send(401, { 'error': 'invalid token'});
+          res.send(401, { 'error': 'invalid token:' + error});
           next();
       });
   });

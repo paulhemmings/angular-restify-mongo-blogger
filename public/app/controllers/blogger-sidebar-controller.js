@@ -8,6 +8,9 @@ angular
             $scope.blogs = [];
 
             function selectBlog(blog) {
+                if (bloggerManager.selectedBlogs.indexOf(blog) != -1) {
+                    return bloggerManager.selectBlogs([]);
+                }
                 bloggerManager.selectBlogs([blog]);
             }
 
