@@ -1,4 +1,5 @@
 <h4>Archives</h4>
 <ol id="archive-blog-titles" class="list-unstyled">
-    <li ng-click="selectBlog(blog)" ng-repeat="blog in blogs" class="blogs-title">{{blog.title}}</li>
+    <li ng-click="selectBlog()" ng-show="userAuthenticated()" class="blogs-title">New Blog</li>
+    <li ng-click="selectBlog(blog)" ng-repeat="blog in blogs()" class="blogs-title">{{blog.title}}</li>
 </ol>

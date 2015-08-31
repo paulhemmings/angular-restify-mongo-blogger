@@ -97,4 +97,11 @@ angular
                 }
             }
         });
-}]);
+    }])
+    .run( function($rootScope) {
+        // register listener to watch route changes
+        $rootScope.$on("$locationChangeStart", function(event, next, current) {
+            $rootScope.$broadcast('page-reloaded');
+        });
+
+    });

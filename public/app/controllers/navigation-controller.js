@@ -9,11 +9,11 @@ angular
 
             function buildOptions(authenticated) {
                 $scope.options.length = 0;
-                $scope.options.push({ key:"Home", url:"#/welcome" });
+                $scope.options.push({ key:"Home", url:"#/welcome", selected : false });
                 if (authenticated) {
-                  $scope.options.push({ key:"Logout", url:"#/logout" });
+                  $scope.options.push({ key:"Logout", url:"#/logout", selected : false });
                 } else {
-                  $scope.options.push({ key:"Login", url:"#/login" });
+                  $scope.options.push({ key:"Login", url:"#/login", selected : false });
                 }
             }
 
@@ -23,7 +23,12 @@ angular
                 });
                 root.$on('user-not-authenticated', function() {
                     buildOptions(false);
-                });                
+                });
+                root.$on('page-reloaded', function() {
+                    $scope.options.forEach(function(option) {
+                      option.selected = (document.URL.indexOf(option.url) > 0);
+                    })
+                });
             }
 
             function initialize() {

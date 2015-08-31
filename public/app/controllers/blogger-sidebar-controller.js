@@ -2,27 +2,29 @@
 
 angular
     .module('MainApplicationModule')
-    .controller('BloggerSidebarController', ['$scope', '$rootScope', '$stateParams', 'bloggerManager',
-        function($scope, $rootScope, $stateParams, bloggerManager) {
+    .controller('BloggerSidebarController', ['$scope', '$rootScope', '$stateParams', 'bloggerManager', 'userManager',
+        function($scope, $rootScope, $stateParams, bloggerManager, userManager) {
 
-            $scope.blogs = [];
+            $scope.blogs = blogs;
             $scope.selectBlog = selectBlog;
+            $scope.userAuthenticated = userAuthenticated;
+
+            function userAuthenticated() {
+                return userManager.authenticated != null;
+            }
 
             function selectBlog(blog) {
-                if (bloggerManager.selectedBlogs.indexOf(blog) !== -1) {
+                if (blog == null || bloggerManager.selectedBlogs.indexOf(blog) !== -1) {
                     return bloggerManager.selectBlogs([]);
                 }
                 bloggerManager.selectBlogs([blog]);
             }
 
-            function handleEvents(root) {
-                root.$on('blogs-loaded', function() {
-                    $scope.blogs = bloggerManager.blogs;
-                });
+            function blogs() {
+                return bloggerManager.blogs;
             }
 
             function initialize() {
-                handleEvents($rootScope);
                 bloggerManager.loadBlogs($stateParams.username);
             }
 
@@ -34,7 +36,6 @@ angular
              */
 
             $scope.__test__ = {
-              handleEvents: handleEvents,
               initialize: initialize
             };
 

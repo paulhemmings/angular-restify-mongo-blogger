@@ -1,1 +1,1 @@
-<a ng-repeat="option in options" class="blog-nav-item active" href="{{option.url}}">{{option.key}}</a>
+<a ng-repeat="option in options" class="blog-nav-item" ng-class="option.selected ? active : inactive" href="{{option.url}}">{{option.key}}</a>
