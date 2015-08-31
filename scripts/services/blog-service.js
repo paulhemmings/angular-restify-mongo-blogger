@@ -17,6 +17,18 @@ exports.all = function(user) {
   return promise;
 };
 
+exports.published = function(user) {
+  var promise = new Promise();
+	Blog.find({ userId : user._id, published : true }, function(err, blogs) {
+		if(err) {
+      return promise.reject (err.error);
+		}
+    promise.resolve (blogs);
+	});
+  return promise;
+};
+
+
 exports.get = function(user, id) {
   var promise = new Promise();
 	Blog.find({ userId : user._id,  _id : id }, function(err, blogs) {

@@ -5,9 +5,12 @@ angular
     .controller('LoginController', ['$scope', '$rootScope', '$location', 'userService',
         function($scope, $rootScope, $location, userService) {
 
+            $scope.login = login;
+            $scope.create = create;
+
             function login(user) {
-                userService.login(user).then(function() {
-                    $location.path( '/blogger' );
+                userService.login(user).then(function(response) {
+                    $location.path('/blogger');
                 }, function(error) {
                     $scope.error = error.error;
                 });
@@ -15,19 +18,14 @@ angular
 
             function create(user) {
                 userService.create(user).then(function() {
-                  $location.path( '/blogger' );
+                  $location.path('/blogger');
                 }, function(error) {
                     $scope.error = error.error;
                 });
             }
 
-            function exposeMethods(scope) {
-                scope.login = login;
-                scope.create = create;
-            }
-
             function initialize() {
-                exposeMethods($scope);
+                // none required
             }
 
             initialize();
@@ -38,8 +36,7 @@ angular
              */
 
             $scope.__test__ = {
-              initialize: initialize,
-              exposeMethods: exposeMethods
+              initialize: initialize
             };
 
         }]);

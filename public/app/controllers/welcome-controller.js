@@ -2,15 +2,24 @@
 
 angular
     .module('MainApplicationModule')
-    .controller('WelcomeController', ['$scope', '$rootScope', '$location', 'userService',
-        function($scope, $rootScope, $location, userService) {
+    .controller('WelcomeController', ['$scope', '$rootScope', '$location', 'userManager',
+        function($scope, $rootScope, $location, userManager) {
+
+            function handleEvents(root) {
+                root.$on('users-loaded', function() {
+                    $scope.users = userManager.users;
+                });
+                root.$on('user-authenticated', function() {
+                    $location.path('/blogger');
+                });
+                root.$on('user-not-authenticated', function() {
+                    userManager.loadUsers();
+                });
+            }
 
             function initialize() {
-                userService.get().then(function() {
-                    $location.path( '/blogger');
-                }, function() {
-                    $location.path( '/login');
-                });
+                handleEvents($rootScope);
+                userManager.authenticateUser();
             }
 
             initialize();

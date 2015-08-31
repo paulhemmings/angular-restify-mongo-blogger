@@ -27,10 +27,18 @@ angular
             });
         }
 
+        function all() {
+          return $http({
+              url: '/users',
+              method: 'GET'
+          });
+        }
+
         return {
             login: login,
             create: create,
-            get: get
+            get: get,
+            all: all
         };
 
     });

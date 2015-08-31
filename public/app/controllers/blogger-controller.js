@@ -2,10 +2,27 @@
 
 angular
     .module('MainApplicationModule')
-    .controller('BloggerController', ['$scope', '$rootScope', 'bloggerManager',
-        function($scope, $rootScope, bloggerManager) {
+    .controller('BloggerController', ['$scope', '$rootScope', '$stateParams', 'bloggerManager', 'userManager',
+        function($scope, $rootScope, $stateParams, bloggerManager, userManager) {
 
             $scope.selectedBlogs = [];
+
+            $scope.updateBlog = updateBlog;
+            $scope.userAuthenticated = userAuthenticated;
+            $scope.blogSelected = blogSelected;
+            $scope.selectedBlogs = selectedBlogs;
+
+            function userAuthenticated() {
+                return userManager.authenticated != null;
+            }
+
+            function blogSelected() {
+                return bloggerManager.selectedBlogs && bloggerManager.selectedBlogs.length > 0;
+            }
+
+            function selectedBlogs() {
+                return bloggerManager.selectedBlogs;
+            }
 
             function updateBlog(blog) {
                 bloggerManager.updateBlog(blog);
@@ -15,18 +32,12 @@ angular
                 root.$on('blog-created', function() {
                     $scope.newBlog = {};
                 });
-                root.$on('blogs-selected', function() {
-                    $scope.selectedBlogs = bloggerManager.selectedBlogs;
-                });
-            }
-
-            function exposeMethods(scope) {
-                scope.updateBlog = updateBlog;
             }
 
             function initialize() {
                 handleEvents($rootScope);
-                exposeMethods($scope);
+                userManager.authenticateUser();
+                bloggerManager.selectedBlogs.length = 0;
             }
 
             initialize();
@@ -38,7 +49,6 @@ angular
 
             $scope.__test__ = {
                 handleEvents: handleEvents,
-                exposeMethods: exposeMethods,
                 initialize: initialize
             };
 

@@ -1,8 +1,9 @@
 'use strict';
 
 /*
- * Model manager.
- * Used to encapsulate all model specific methods into single object
+ * Blogger Model manager.
+ * Used to encapsulate all blogger model specific methods into single object
+ * so they can be shared across the two controllers: main, and sidebar.
  * http://viralpatel.net/blogs/angularjs-service-factory-tutorial/
  */
 
@@ -16,8 +17,8 @@ angular
       };
 
 
-      manager.loadBlogs = function() {
-          bloggerService.listBlogs().then(function(response) {
+      manager.loadBlogs = function(username) {
+          bloggerService.listBlogs(username).then(function(response) {
               manager.blogs = response.data;
               $rootScope.$broadcast('blogs-loaded');
           });

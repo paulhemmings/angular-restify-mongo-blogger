@@ -1,22 +1,30 @@
-<h3>Add</h3>
-<div id="new-blog-post">
-    <input type="text" ng-model="newBlog.title"/>
-    <textarea ng-model="newBlog.content"></textarea>
-    <button ng-click="updateBlog(newBlog)">Add</button>
+<div ng-show="!blogSelected() && userAuthenticated()">
+  <h3>Add</h3>
+  <div id="new-blog-post">
+      <input type="text" ng-model="newBlog.title"/>
+      <textarea ng-model="newBlog.content"></textarea>
+      <input id="publish-checkbox" type="checkbox" ng-model="newBlog.published">
+      <label for="publish-checkbox">Published</label>
+      <button ng-click="updateBlog(newBlog)">Add</button>
+  </div>
 </div>
 
-<div id="existing-posts">
+<div ng-show="!blogSelected() && !userAuthenticated()">
+  <h4>Select a blog from Archive</h4>
+</div>
+
+<div ng-show="blogSelected()" id="existing-posts">
     <h3>Posts</h3>
-    <div ng-repeat="selected in selectedBlogs | filter:searchText" class="blogs-listing">
+    <div ng-repeat="selected in selectedBlogs() | filter:searchText" class="blogs-listing">
       <div class="blog-post">
         <h2 class="blog-post-title">{{selected.title}}</h2>
         <ul class="blog-post-meta">
             <li ng-repeat="tag in selected.tags">{{tag}}</li>
         </ul>
         <div class="blog-post-content">
-          <textarea ng-model="selected.content">{{selected.content}}</textarea>
+            <textarea ng-model="selected.content">{{selected.content}}</textarea>
         </div>
-          <button ng-click="updateBlog(selected)">Update</button>
+            <button ng-click="updateBlog(selected)">Update</button>
       </div>
     </div>
 </div>

@@ -38,6 +38,17 @@ exports.login = function(cryptoService, username, password) {
     });
 };
 
+exports.all = function(user) {
+  var promise = new Promise();
+	User.find({ }, function(err, users) {
+		if(err) {
+      return promise.reject (err.error);
+		}
+    promise.resolve (users);
+	});
+  return promise;
+};
+
 exports.persist = function(cryptoService, model) {
     var promise = new Promise();
 

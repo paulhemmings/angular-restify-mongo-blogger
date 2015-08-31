@@ -41,6 +41,22 @@ exports.initialize = function(server, services) {
     });
   });
 
+  server.get('/users', function(req, res, next) {
+    userService.all().then(function(users) {
+      res.send(200, { 'users' : users.map(function(user) {
+        return {
+            name : user.name,
+            username : user.username
+        };
+        })
+      });
+      next();
+    }, function(error) {
+      res.send(301, { 'error': error});
+      next();
+    });
+  });
+
   // user: retrieve
 
   server.get('/user', function(req, res, next) {

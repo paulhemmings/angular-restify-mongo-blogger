@@ -2,10 +2,11 @@
 
 angular
     .module('MainApplicationModule')
-    .controller('BloggerSidebarController', ['$scope', '$rootScope', 'bloggerManager',
-        function($scope, $rootScope, bloggerManager) {
+    .controller('BloggerSidebarController', ['$scope', '$rootScope', '$stateParams', 'bloggerManager',
+        function($scope, $rootScope, $stateParams, bloggerManager) {
 
             $scope.blogs = [];
+            $scope.selectBlog = selectBlog;
 
             function selectBlog(blog) {
                 if (bloggerManager.selectedBlogs.indexOf(blog) !== -1) {
@@ -20,14 +21,9 @@ angular
                 });
             }
 
-            function exposeMethods(scope) {
-                scope.selectBlog = selectBlog;
-            }
-
             function initialize() {
-                bloggerManager.loadBlogs();
                 handleEvents($rootScope);
-                exposeMethods($scope);
+                bloggerManager.loadBlogs($stateParams.username);
             }
 
             initialize();
@@ -39,7 +35,6 @@ angular
 
             $scope.__test__ = {
               handleEvents: handleEvents,
-              exposeMethods: exposeMethods,
               initialize: initialize
             };
 

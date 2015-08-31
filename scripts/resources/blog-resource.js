@@ -59,6 +59,16 @@
         });
       },
 
+      usersBlogs : function(req, res, next) {
+        var self = this;
+        self.userService.find({ username : req.params.username }).then(function(user) {
+          self.blogService.published(user).then(function(blogs) {
+              res.send(200, blogs);
+              next();
+          });
+        });
+      },
+
       allBlogs : function(req, res, next) {
         var self = this;
         self.getAuthenticatedUser(req, self.userService, self.authService, self.cookieService, self.cryptoService).then(function(user) {
@@ -67,8 +77,8 @@
                 next();
             });
         }, function(error) {
-          res.send(401, error);
-          next();
+            res.send(401, error);
+            next();
         });
       }
 
@@ -80,6 +90,7 @@
 
     server.post('/blog', Extensions.bind(Context.postBlog, Context));
     server.get('/blog/:id', Extensions.bind(Context.getBlog, Context));
+    server.get('/blogs/:username', Extensions.bind(Context.usersBlogs, Context));
     server.get('/blogs', Extensions.bind(Context.allBlogs, Context));
 
     /*

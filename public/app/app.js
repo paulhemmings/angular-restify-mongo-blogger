@@ -8,7 +8,7 @@
  *  var app = angular.module('app');
  */
 
-angular.module('MainApplicationModule', ['ui.router', 'ngAnimate']);
+angular.module('MainApplicationModule', ['ui.router', 'ngAnimate', /* 'ngCookies' */ ]);
 
 /*
  * Add SPA Routing using route provider
@@ -27,24 +27,66 @@ angular
         .state('just-arrived', {
             url:'/welcome',
             views: {
+                'navigation': {
+                    templateUrl: '/app/partials/navigation.html',
+                    controller: 'NavigationController'
+                },
                 'content': {
                     templateUrl: '/app/partials/welcome.html',
                     controller: 'WelcomeController'
                 }
             }
         })
-        .state('unauthenticated', {
+        .state('logging-in', {
             url:'/login',
             views: {
+                'navigation': {
+                    templateUrl: '/app/partials/navigation.html',
+                    controller: 'NavigationController'
+                },
                 'content': {
                     templateUrl: '/app/partials/login.html',
                     controller: 'LoginController'
                 }
             }
         })
-        .state('blogger', {
+        .state('logging-out', {
+            url:'/logout',
+            views: {
+                'navigation': {
+                    templateUrl: '/app/partials/navigation.html',
+                    controller: 'NavigationController'
+                },
+                'content': {
+                    templateUrl: '/app/partials/logout.html',
+                    controller: 'LogoutController'
+                }
+            }
+        })
+        .state('existing-blogger', {
+            url:'/blogger/:username',
+            views: {
+                'navigation': {
+                    templateUrl: '/app/partials/navigation.html',
+                    controller: 'NavigationController'
+                },
+                'content': {
+                    templateUrl: '/app/partials/blogger.html',
+                    controller: 'BloggerController'
+                },
+                'sidebar': {
+                    templateUrl: '/app/partials/blogger-sidebar.html',
+                    controller: 'BloggerSidebarController'
+                }
+            }
+        })
+        .state('authenticated-blogger', {
             url:'/blogger',
             views: {
+                'navigation': {
+                    templateUrl: '/app/partials/navigation.html',
+                    controller: 'NavigationController'
+                },
                 'content': {
                     templateUrl: '/app/partials/blogger.html',
                     controller: 'BloggerController'

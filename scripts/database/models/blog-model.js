@@ -8,6 +8,7 @@ var BlogSchema = new Schema({
 	title : String,
 	content : String,
   tags: [String],
+  published: [Boolean],
   createdAt: {type: Date, required: true, default: Date},
   updatedAt: {type: Date, required: true, default: Date}
 });

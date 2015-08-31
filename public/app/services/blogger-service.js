@@ -14,9 +14,9 @@ angular
     .module('MainApplicationModule')
     .service('bloggerService', function($http) {
 
-        function listBlogs() {
+        function listBlogs(username) {
             return $http({
-                url: '/blogs',
+                url: username == null ? '/blogs' : '/blogs/' + username,
                 method: 'GET'
             });
         }

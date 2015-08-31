@@ -1,7 +1,8 @@
-<h3>LOGIN: <h2 ng-show="error">{{error}}</h2></h3>
+<h3>LOGIN:</h3>
 <input type="text" ng-model="user.username" />
 <input type="text" ng-model="user.password" />
 <button ng-click="login(user)">Login</button>
+<div class="error-message" ng-show="error">{{error}}</div>
 <h3>CREATE</h3>
 <input type="text" ng-model="newUser.username" />
 <input type="text" ng-model="newUser.password" />
