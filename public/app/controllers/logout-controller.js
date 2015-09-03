@@ -2,14 +2,14 @@
 
 angular
     .module('MainApplicationModule')
-    .controller('LogoutController', ['$scope', '$rootScope', 'userManager', // '$cookies',
-        function($scope, $rootScope, userManager /* ,$cookies */) {
+    .controller('LogoutController', ['$scope', '$rootScope', '$location', 'userManager', '$cookies',
+        function($scope, $rootScope, $location, userManager, $cookies) {
 
             $scope.logout = logout;
 
             function logout() {
                 // delete the cookie.
-                // $cookies.remove('BloggerAuthenticationToken');
+                delete $cookies.BloggerAuthenticationToken;
                 // redirect to home page
                 userManager.authenticateUser();
             }
@@ -21,7 +21,8 @@ angular
             }
 
             function initialize() {
-                handleEvents($rootScope)
+                handleEvents($rootScope);
+                userManager.authenticateUser();
             }
 
             initialize();

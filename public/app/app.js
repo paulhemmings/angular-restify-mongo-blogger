@@ -8,7 +8,7 @@
  *  var app = angular.module('app');
  */
 
-angular.module('MainApplicationModule', ['ui.router', 'ngAnimate', /* 'ngCookies' */ ]);
+angular.module('MainApplicationModule', ['ui.router', 'ngAnimate', 'ngCookies' ]);
 
 /*
  * Add SPA Routing using route provider
