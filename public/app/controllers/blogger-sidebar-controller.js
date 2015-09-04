@@ -2,8 +2,8 @@
 
 angular
     .module('MainApplicationModule')
-    .controller('BloggerSidebarController', ['$scope', '$rootScope', '$stateParams', 'bloggerManager', 'userManager',
-        function($scope, $rootScope, $stateParams, bloggerManager, userManager) {
+    .controller('BloggerSidebarController', ['$scope', '$stateParams', 'bloggerManager', 'userManager',
+        function($scope, $stateParams, bloggerManager, userManager) {
 
             $scope.blogs = blogs;
             $scope.selectBlog = selectBlog;

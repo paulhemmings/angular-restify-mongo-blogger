@@ -2,8 +2,8 @@
 
 angular
     .module('MainApplicationModule')
-    .controller('LoginController', ['$scope', '$rootScope', '$location', 'userService',
-        function($scope, $rootScope, $location, userService) {
+    .controller('LoginController', ['$scope', '$location', 'userService',
+        function($scope, $location, userService) {
 
             $scope.login = login;
             $scope.create = create;

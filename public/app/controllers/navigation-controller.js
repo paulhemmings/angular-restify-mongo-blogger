@@ -6,34 +6,24 @@ angular
         function($scope, $rootScope, $location, userManager) {
 
             $scope.options = [];
+            $scope.isSelected = isSelected;
 
             function buildOptions(authenticated) {
                 $scope.options.length = 0;
                 $scope.options.push({ key:"Home", url:"#/welcome", selected : false });
-                if (authenticated) {
+                if (userManager.isAuthenticated()) {
                   $scope.options.push({ key:"Logout", url:"#/logout", selected : false });
                 } else {
                   $scope.options.push({ key:"Login", url:"#/login", selected : false });
                 }
             }
 
-            function handleEvents(root) {
-                root.$on('user-authenticated', function() {
-                    buildOptions(true);
-                });
-                root.$on('user-not-authenticated', function() {
-                    buildOptions(false);
-                });
-                root.$on('page-reloaded', function() {
-                    $scope.options.forEach(function(option) {
-                      option.selected = (document.URL.indexOf(option.url) > 0);
-                    })
-                });
+            function isSelected(option) {
+                return (document.URL.indexOf(option.url) > 0);
             }
 
             function initialize() {
-              handleEvents($rootScope);
-              userManager.authenticateUser();
+              userManager.authenticateUser().then(buildOptions);
             }
 
             initialize();

@@ -2,8 +2,8 @@
 
 angular
     .module('MainApplicationModule')
-    .controller('BloggerController', ['$scope', '$rootScope', '$stateParams', 'bloggerManager', 'userManager',
-        function($scope, $rootScope, $stateParams, bloggerManager, userManager) {
+    .controller('BloggerController', ['$scope', '$stateParams', 'bloggerManager', 'userManager',
+        function($scope, $stateParams, bloggerManager, userManager) {
 
             $scope.selectedBlogs = [];
 
@@ -25,17 +25,12 @@ angular
             }
 
             function updateBlog(blog) {
-                bloggerManager.updateBlog(blog);
-            }
-
-            function handleEvents(root) {
-                root.$on('blog-created', function() {
+                bloggerManager.updateBlog(blog).then(function() {
                     $scope.newBlog = {};
                 });
             }
 
             function initialize() {
-                handleEvents($rootScope);
                 userManager.authenticateUser();
                 bloggerManager.selectedBlogs.length = 0;
             }
@@ -48,7 +43,6 @@ angular
              */
 
             $scope.__test__ = {
-                handleEvents: handleEvents,
                 initialize: initialize
             };
 

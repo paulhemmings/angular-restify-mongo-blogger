@@ -1,6 +1,6 @@
 <h3>Please login, or view blogs from one of these existing users<h3>
 <ul>
-  <li ng-repeat="user in users">
+  <li ng-repeat="user in users()">
       <a href="/#/blogger/{{user.username}}">{{user.name || user.username}}</a>
   </li>
 </ul>

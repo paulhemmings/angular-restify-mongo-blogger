@@ -9,7 +9,7 @@
 
 angular
     .module('MainApplicationModule')
-    .factory('bloggerManager', [ '$http', '$rootScope', 'bloggerService', function($http, $rootScope, bloggerService) {
+    .factory('bloggerManager', [ '$http', '$q', 'bloggerService', function($http, $q, bloggerService) {
 
       var manager = {
         blogs: [],
@@ -18,22 +18,25 @@ angular
 
 
       manager.loadBlogs = function(username) {
+          var deferred = $q.defer();
           bloggerService.listBlogs(username).then(function(response) {
               manager.blogs = response.data;
-              $rootScope.$broadcast('blogs-loaded');
+              deferred.resolve();
           });
+          return deferred.promise;
       };
 
       manager.updateBlog = function(blog) {
+        var deferred = $q.defer();
           bloggerService.updateBlog(blog).then(function() {
-              $rootScope.$broadcast('blog-created');
               manager.loadBlogs();
+              deferred.resolve();
           });
+          return deferred.promise;
       };
 
       manager.selectBlogs = function(blogs) {
           manager.selectedBlogs = blogs;
-          $rootScope.$broadcast('blogs-selected');
       };
 
       return manager;

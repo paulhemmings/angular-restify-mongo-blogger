@@ -6,28 +6,39 @@
 
 angular
     .module('MainApplicationModule')
-    .factory('userManager', [ '$http', '$rootScope', 'userService', function($http, $rootScope, userService) {
+    .factory('userManager', [ '$http', '$q', 'userService', function($http, $q, userService) {
 
       var manager = {
         users: [],
         authenticated: null
       };
 
+      manager.isAuthenticated = function() {
+          return manager.authenticated != null;
+      }
+
       manager.loadUsers = function() {
+          var deferred = $q.defer();
           userService.all().then(function(response) {
               manager.users = response.data.users;
-              $rootScope.$broadcast('users-loaded');
+              deferred.resolve();
+          }, function(error) {
+              manager.users.length = 0;
+              deferred.resolve();
           });
+          return deferred.promise;
       };
 
       manager.authenticateUser = function() {
+          var deferred = $q.defer();
           userService.get().then(function(response) {
               manager.authenticated = response.data;
-              $rootScope.$broadcast('user-authenticated');
+              deferred.resolve();
           }, function(error) {
               manager.authenticated = null;
-              $rootScope.$broadcast('user-not-authenticated');
+              deferred.resolve();
           });
+          return deferred.promise;
       };
 
       return manager;

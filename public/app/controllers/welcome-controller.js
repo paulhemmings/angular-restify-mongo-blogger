@@ -5,21 +5,22 @@ angular
     .controller('WelcomeController', ['$scope', '$rootScope', '$location', 'userManager',
         function($scope, $rootScope, $location, userManager) {
 
-            function handleEvents(root) {
-                root.$on('users-loaded', function() {
-                    $scope.users = userManager.users;
-                });
-                root.$on('user-authenticated', function() {
+            $scope.users = getUsers;
+
+            function getUsers() {
+                return userManager.users;
+            }
+
+            function handleAuthentication() {
+                if (userManager.isAuthenticated()) {
                     $location.path('/blogger');
-                });
-                root.$on('user-not-authenticated', function() {
+                } else {
                     userManager.loadUsers();
-                });
+                }
             }
 
             function initialize() {
-                handleEvents($rootScope);
-                userManager.authenticateUser();
+                userManager.authenticateUser().then(handleAuthentication);
             }
 
             initialize();

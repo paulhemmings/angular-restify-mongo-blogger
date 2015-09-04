@@ -11,17 +11,10 @@ angular
                 // delete the cookie.
                 delete $cookies.BloggerAuthenticationToken;
                 // redirect to home page
-                userManager.authenticateUser();
-            }
-
-            function handleEvents(root) {
-                root.$on('user-not-authenticated', function() {
-                    $location.path('/welcome');
-                });
+                $location.path('/welcome');
             }
 
             function initialize() {
-                handleEvents($rootScope);
                 userManager.authenticateUser();
             }
 
