@@ -2,7 +2,7 @@
   <h3>Add</h3>
   <div id="new-blog-post">
       <input type="text" ng-model="newBlog.title"/>
-      <textarea ng-model="newBlog.content"></textarea>
+      <textarea auto-size="" ng-model="newBlog.content"></textarea>
       <input id="publish-checkbox" type="checkbox" ng-model="newBlog.published">
       <label for="publish-checkbox">Published</label>
       <button ng-click="updateBlog(newBlog)">Add</button>
@@ -21,7 +21,7 @@
             <li ng-repeat="tag in selected.tags">{{tag}}</li>
         </ul>
         <div class="blog-post-content">
-            <textarea ng-model="selected.content">{{selected.content}}</textarea>
+            <textarea auto-size="" ng-model="selected.content">{{selected.content}}</textarea>
             <input id="publish-checkbox" type="checkbox" ng-model="newBlog.published">
             <label for="publish-checkbox">Published</label>
         </div>

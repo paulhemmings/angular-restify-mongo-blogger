@@ -17,3 +17,35 @@ exports.bind = function(fn, scope) {
     return fn.apply(scope, arguments);
   };
 };
+
+exports.curry = function(foo, b) {
+   return function(c) {
+       return foo(b, c);
+   }
+};
+
+exports.combine = function(a, b) {
+  return function(c) {
+    return a(b(c));
+  }
+};
+
+exports.Contain = function(v) {
+  function Container(value) {
+      this.pipe = function(foo) {
+        return foo(value);
+      };
+      this.thru = function(foo) {
+        return new Container(foo(value));
+      }
+  }
+  return new Container(v);
+};
+
+exports.chain = function(scope, start, error) {
+    return function(success) {
+        return function() {
+            start.apply(scope, arguments).then(success, error);
+        }
+    }
+};

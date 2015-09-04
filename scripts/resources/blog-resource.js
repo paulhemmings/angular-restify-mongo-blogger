@@ -19,10 +19,11 @@
       cryptoService : services.CryptoService,
 
 
-      getAuthenticatedUser : function(req, userService, authService, cookieService, cryptoService) {
+      getAuthenticatedUser : function(req) {
+          var self = this;
           var promise = new Promise();
-          authService.authenticateRequest(req, cookieService, cryptoService).then(function(token) {
-              userService.find({'username' : token.username}).then(function(user) {
+          self.authService.authenticateRequest(req, self.cookieService, self.cryptoService).then(function(token) {
+              self.userService.find({'username' : token.username}).then(function(user) {
                   promise.resolve(user);
               }, function(error) {
                   promise.reject({'error': 'invalid user:' + error});
@@ -35,7 +36,7 @@
 
       postBlog : function (req, res, next) {
         var self = this;
-        self.getAuthenticatedUser(req, self.userService, self.authService, self.cookieService, self.cryptoService).then(function(user) {
+        self.getAuthenticatedUser(req).then(function(user) {
             self.blogService.persist(user, req.body).then(function(blog) {
                 res.send(200, blog);
                 next();
@@ -48,7 +49,7 @@
 
       getBlog : function(req, res, next) {
         var self = this;
-        self.getAuthenticatedUser(req, self.userService, self.authService, self.cookieService, self.cryptoService).then(function(user) {
+        self.getAuthenticatedUser(req).then(function(user) {
             self.blogService.get(user, req.params.id).then(function(blog) {
                 res.send(200, blog);
                 next();
@@ -71,7 +72,7 @@
 
       allBlogs : function(req, res, next) {
         var self = this;
-        self.getAuthenticatedUser(req, self.userService, self.authService, self.cookieService, self.cryptoService).then(function(user) {
+        self.getAuthenticatedUser(req).then(function(user) {
             self.blogService.all(user).then(function(blogs) {
                 res.send(200, blogs);
                 next();

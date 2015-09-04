@@ -15,7 +15,6 @@ angular
             }
 
             function initialize() {
-                userManager.authenticateUser();
             }
 
             initialize();
