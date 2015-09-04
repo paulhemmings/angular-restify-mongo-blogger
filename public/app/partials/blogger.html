@@ -13,8 +13,7 @@
   <h4>Select a blog from Archive</h4>
 </div>
 
-<div ng-show="blogSelected()" id="existing-posts">
-    <h3>Posts</h3>
+<div ng-show="blogSelected() && userAuthenticated()" id="existing-posts">
     <div ng-repeat="selected in selectedBlogs() | filter:searchText" class="blogs-listing">
       <div class="blog-post">
         <h2 class="blog-post-title">{{selected.title}}</h2>
@@ -23,8 +22,24 @@
         </ul>
         <div class="blog-post-content">
             <textarea ng-model="selected.content">{{selected.content}}</textarea>
+            <input id="publish-checkbox" type="checkbox" ng-model="newBlog.published">
+            <label for="publish-checkbox">Published</label>
         </div>
             <button ng-click="updateBlog(selected)">Update</button>
+      </div>
+    </div>
+</div>
+
+<div ng-show="blogSelected() && !userAuthenticated()" id="existing-posts">
+    <div ng-repeat="selected in selectedBlogs() | filter:searchText" class="blogs-listing">
+      <div class="blog-post">
+        <h2 class="blog-post-title">{{selected.title}}</h2>
+        <ul class="blog-post-meta">
+            <li ng-repeat="tag in selected.tags">{{tag}}</li>
+        </ul>
+        <div class="blog-post-content">
+            {{selected.content}}
+        </div>
       </div>
     </div>
 </div>
