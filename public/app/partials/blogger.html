@@ -22,7 +22,7 @@
         </ul>
         <div class="blog-post-content">
             <textarea auto-size="" ng-model="selected.content">{{selected.content}}</textarea>
-            <input id="publish-checkbox" type="checkbox" ng-model="newBlog.published">
+            <input id="publish-checkbox" type="checkbox" ng-model="selected.published">
             <label for="publish-checkbox">Published</label>
         </div>
             <button ng-click="updateBlog(selected)">Update</button>
