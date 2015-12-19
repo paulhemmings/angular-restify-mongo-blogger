@@ -2,7 +2,9 @@
 
 var restify = require('restify'),
     CookieParser = require('restify-cookies'),
-    fs = require('fs');
+    fs = require('fs'),
+    argv = require('optimist').argv,
+    DEFAULT_PORT = 5000;
 
 // instantiate the server
 // http://mcavage.me/node-restify/#Bundled-Plugins
@@ -28,7 +30,7 @@ server.get('/', restify.serveStatic({
 
 // bootstrap database and models
 
-require( __dirname + '/database/database');
+require( __dirname + '/database/database').initialize(argv.be_ip || 'localhost');
 
 // bootstrap services
 
@@ -51,6 +53,6 @@ fs.readdirSync(modelsPath).forEach(function(file) {
 
 // start the server listening
 
-server.listen(8080, function() {
+server.listen(process.env.PORT || DEFAULT_PORT, function() {
   console.log('%s listening at %s', server.name, server.url);
 });

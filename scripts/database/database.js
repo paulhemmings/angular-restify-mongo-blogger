@@ -1,17 +1,21 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-	fs = require('fs');
+exports.initialize = function(ip) {
 
-// bootstrap connections.
+		var mongoose = require('mongoose'),
+				fs = require('fs'),
+				connectionString = 'mongodb://' + ip + '/angular-restify-mongo-blogger';
 
-console.log('connect to db');
-var db = mongoose.connect('mongodb://localhost/angular-restify-mongo-blogger');
+		// bootstrap connections.
 
-// bootstrap modules
+		console.log('connect to DB: ' + connectionString);
+		mongoose.connect(connectionString);
 
-var modelsPath = __dirname + '/models';
-fs.readdirSync(modelsPath).forEach(function(file) {
-	console.log('load model ' + file);
-    require(modelsPath + '/' + file);
-});
+		// bootstrap modules
+
+		var modelsPath = __dirname + '/models';
+		fs.readdirSync(modelsPath).forEach(function(file) {
+			console.log('load model ' + file);
+		    require(modelsPath + '/' + file);
+		});
+}

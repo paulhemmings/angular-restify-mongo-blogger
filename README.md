@@ -22,8 +22,10 @@ $ git clone https://github.com/paulhemmings/angular-restify-mongo-blogger.git
 $ npm install
 
 ### Running application
+#### be_ip is the public IP of the address where Mongo is hosted.
+#### optional - defaults to 'localhost'
 
-$ node ./scripts/restify-server.js
+$ node ./scripts/restify-server.js --be_ip 10.240.0.2
 
 ### View site
 
